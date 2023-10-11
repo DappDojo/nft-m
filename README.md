@@ -1,13 +1,26 @@
-# Sample Hardhat Project
+# NFT Marketplace Sample Project (Work in progress)
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a script that deploys that contract.
+This personal project demonstrates a basic Marketplace functionality. We implement the following contracts:
 
-Try running some of the following tasks:
+1.**NFTCollection**: This contract is implemented to create a new NFT collection. It also support lazy minting NFTs.
+2.**NFTVoucher**: This contract allows to verify vouchers to redeem a lazy NFT in the NFT collection contract. 
+3.**Marketplace**: This contract implements the functionality to list and buy NFTs. This is an upgradable contract that implements the UUPS proxy pattern. 
 
+To install the project just execute:
+
+```
+npm install
+```
+
+
+To test the project just
 ```shell
-npx hardhat help
 npx hardhat test
 REPORT_GAS=true npx hardhat test
+```
+
+To check the project local blockchain run:
+```
 npx hardhat node
 npx hardhat run scripts/deploy.js
 ```
