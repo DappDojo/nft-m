@@ -42,6 +42,7 @@ contract NFTVoucher is EIP712{
             ),
             voucher.minPrice,
             keccak256(bytes(voucher.uri)),
+            voucher.creator,
             voucher.royalties
         )));
     }
