@@ -11,7 +11,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/common/ERC2981.sol";
 import "./NFTVoucher.sol";
 
-contract NFTCollection is 
+contract NFTCollections is 
         ERC721, 
         ERC2981,
         ReentrancyGuard, 
@@ -26,21 +26,20 @@ contract NFTCollection is
     mapping(bytes32 => bool) private signatures;
 
     uint256 public tokenCount;
+    uint256 private constant TO_PERCENTAGE = 10000;
+    uint256 public maxCreatorRoyalties;
+    uint8 public lazyMintingFee; 
 
-    uint private constant TO_PERCENTAGE = 1000;
-    uint public maxCreatorRoyalties;
-    uint public lazyMintingFee; 
-
-    event LogNFTMinted( uint _nftId, address _owner, string _nftURI, uint _royalties);
+    event LogNewNFTMinted( uint _nftId, address _owner, string _nftURI, uint _royalties);
     event LogSetMaxCreatorRoyalties(uint newMaxCreatorRoyalties);
-    event LogSetLazyMintingFee(uint newLazyMintingFee);
+    event LogSetLazyMintingFee(uint8 newLazyMintingFee);
     
-    constructor(string memory _nameLeda, string memory _symbolLeda, address initialOwner) 
-        ERC721(_nameLeda, _symbolLeda)
+    constructor(string memory _name, string memory _symbol, address initialOwner) 
+        ERC721(_name, _symbol)
         Ownable(initialOwner)
     {
-        // Maximun royalties percentage is 10%
-        maxCreatorRoyalties = 100;
+        // Maximun royalties percentage is 5%
+        maxCreatorRoyalties = 50;
         // Collection Lazy minting fee percentage is 5%
         lazyMintingFee = 50;
     }
@@ -74,7 +73,7 @@ contract NFTCollection is
             "Minting failed!"
         );
         
-        emit LogNFTMinted(tokenId, msg.sender, _tokenURI, _royaltiesPercentage);
+        emit LogNewNFTMinted(tokenId, msg.sender, _tokenURI, _royaltiesPercentage);
 
         return(tokenId);
     }
@@ -96,8 +95,8 @@ contract NFTCollection is
         uint tokenId = tokenCount;
 
         _setTokenRoyalty(tokenId, _newOwner, _royaltiesPercentage);
-        _safeMint(_newOwner, tokenId);
         _setTokenURI(tokenId, _tokenURI);
+        _safeMint(_newOwner, tokenId);
 
         return (true, tokenId);
     }
@@ -157,7 +156,7 @@ contract NFTCollection is
         return tokenId;
     }
 
-    function setLazyMintingFee(uint _lazyMintingFee) 
+    function setLazyMintingFee(uint8 _lazyMintingFee) 
         external
         onlyOwner
     {
