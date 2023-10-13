@@ -24,7 +24,7 @@ contract Marketplace is
 
     // Royalties should be received as an integer number
     // i.e., if royalties are 2.5% this contract should receive 25
-    uint private constant TO_PERCENTAGE = 1000;
+    uint private constant TO_PERCENTAGE = 10000;
     bytes4 private constant _INTERFACE_ID_ERC2981 = 0x2a55205a;
 
     // Percentage fee on sales
@@ -91,15 +91,15 @@ contract Marketplace is
     );
 
     constructor() {
-        _disableInitializers();
+        //_disableInitializers();
     }
 
     function initialize(uint _feePercentage, address initialOwner) 
         public
         initializer
     {
-        __UUPSUpgradeable_init();
         __Ownable_init(initialOwner);
+        __UUPSUpgradeable_init();
         __Pausable_init();
         __ERC721Holder_init();
         __ReentrancyGuard_init();
@@ -132,16 +132,8 @@ contract Marketplace is
         return (_price * listingFeePercentage)/TO_PERCENTAGE;
     }
 
-    function pause() external onlyOwner {
-        _pause();
-    }
-
-    function unpause() external onlyOwner {
-        _unpause();
-    }
-
-    // Make item to offer on the marketplace
-    function makeItem(address _nft, uint _tokenId, uint _price)
+    // Creates a new listing on the marketplace
+    function listItem(address _nft, uint _tokenId, uint _price)
         external
         whenNotPaused
         nonReentrant
@@ -314,6 +306,14 @@ contract Marketplace is
         returns (uint) 
     {
         return itemsSold;
+    }
+
+    function pause() external onlyOwner {
+        _pause();
+    }
+
+    function unpause() external onlyOwner {
+        _unpause();
     }
 
     function getItemsCount()
