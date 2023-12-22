@@ -24,5 +24,8 @@ npx hardhat compile
 To test the project just type the following command:
 ```shell
 npx hardhat test
+
+or
+
 REPORT_GAS=true npx hardhat test
 ```
