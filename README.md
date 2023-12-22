@@ -16,7 +16,7 @@ To install the hardhat project just execute:>
 npm install
 ```
 
-To compalie the project:
+To compile the project:
 ```
 npx hardhat compile
 ```
