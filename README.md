@@ -11,7 +11,7 @@ This personal project demonstrates a basic Marketplace functionality. In this pr
 > This code is not production ready. Some functionality and testing are missing. 
 
 
-To install the hardhat project just execute:>
+To install the hardhat project just execute:
 ```
 npm install
 ```
